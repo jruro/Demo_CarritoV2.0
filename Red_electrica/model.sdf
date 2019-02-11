@@ -1,0 +1,145 @@
+
+<?xml version='1.0'?>
+<sdf version='1.4'>
+<static>true</static>
+
+
+	<model name="Red">
+		<include>
+      		<uri>model://Torre</uri>
+            <name>Torre_0</name>
+      		<pose>0.0 0 0 0 0 0</pose>
+    	</include>
+
+	<include>
+      		<uri>model://Torre</uri>
+            		<name>Torre_1</name>
+      		<pose>17.4548 0 0 0 0 0</pose>
+    	</include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+	      <name>Cable_1</name>
+            <pose>8.73 1.32 6.6 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_2</name>
+            <pose>8.73 1.72 6.6 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_3</name>
+            <pose>8.73 -1.72 6.6 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_4</name>
+            <pose>8.73 -1.32 6.6 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_5</name>
+            <pose>8.73 1.50 8.5 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_7</name>
+            <pose>8.73 -1.50 8.5 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_8</name>
+            <pose>8.73 -1.90 8.5 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_6</name>
+            <pose>8.73 1.90 8.5 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_9</name>
+            <pose>8.73 -1.52 10.4 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_10</name>
+            <pose>8.73 1.52 10.4 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_11</name>
+            <pose>8.73 1.12 10.4 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://cable_torre</uri>
+		<name>Cable_12</name>
+            <pose>8.73 -1.12 10.4 0 0 0</pose>
+        </include>
+
+        <joint name="joint_Cable_0_0_1_A" type="fixed">
+            <parent>Torre_2::link_torre</parent>
+            <child>cable_torre::link_1</child>
+        </joint>
+
+        <joint name="joint_Cable_0_0_2_A" type="fixed">
+            <parent>Torre_1::link_torre</parent>
+            <child>cable_torre::link_0</child>
+        </joint>
+
+        <joint name="joint_Cable_0_0_3_A" type="fixed">
+            <parent>Torre_2::link_torre</parent>
+            <child>cable_torre::link_1</child>
+        </joint>
+
+        <joint name="joint_Cable_0_0_4_A" type="fixed">
+            <parent>Torre_1::link_torre</parent>
+            <child>cable_torre::link_0</child>
+        </joint>
+
+        <!--<include>
+            <uri>model://Cable</uri>
+            <pose>0.0 1.32 6.6 0 0 0</pose>
+            <name>Cable_0_0_1</name>
+        </include>
+
+        <joint name="joint_Cable_0_0_1_A" type="fixed">
+            <parent>world</parent>
+            <child>Cable_0_0_1::link_0</child>
+        </joint>
+
+        <joint name="joint_Cable_0_0_1_B" type="fixed">
+            <parent>world</parent>
+            <child>Cable_0_0_1::link_end</child>
+        </joint>
+
+        <include>
+            <uri>model://Cable</uri>
+            <pose>0.0 1.7200000000000002 6.6 0 0 0</pose>
+            <name>Cable_0_0_2</name>
+        </include>
+
+        <joint name="joint_Cable_0_0_2_A" type="fixed">
+            <parent>world</parent>
+            <child>Cable_0_0_2::link_0</child>
+        </joint>
+
+        <joint name="joint_Cable_0_0_2_B" type="fixed">
+            <parent>world</parent>
+            <child>Cable_0_0_2::link_end</child>
+        </joint>-->
+
+	</model>
+</sdf>

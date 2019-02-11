@@ -1,0 +1,292 @@
+<?xml version='1.0'?>
+<%
+	# Variables
+	L  = 0.40					# Longitud de la barra principal.
+	Barra = [0.05, 0.3, 0.01]	# Dimensiones de la barra.
+	S  = 0.25					# Separación entre las dos herramientas.
+	H1 = 0.05					# Altura del cilindro que sujeta el atornillador.
+	R1 = 0.015					# Radio del mismo.
+	H2 = 0.10					# Altura del atornillador.
+	R2 = 0.005					# Radio del mismo.
+	H3 = 0.1					# Altura del cilindro que sujeta la pinza.
+
+	def printGrayMaterial()
+    "<material>\n"\
+    "  <ambient>0.3 0.3 0.3 1</ambient>\n"\
+    "  <emissive>0 0 0 1</emissive>\n"\
+    "  <diffuse>0.5 0.5 0.5 1</diffuse>\n"\
+    "  <specular>1 1 1 1</specular>\n"\
+    "</material>\n"
+  	end
+
+  	def printPurpleMaterial()
+    "<material>\n"\
+    "  <ambient>0.8 0 0.8 1</ambient>\n"\
+    "  <emissive>0 0 0 1</emissive>\n"\
+    "  <diffuse>0.5 0.5 0.5 1</diffuse>\n"\
+    "  <specular>1 1 1 1</specular>\n"\
+    "</material>\n"
+  	end
+%>
+<sdf version='1.6'>
+	<model name='Herramienta'>
+		<self_collide>false</self_collide>
+		<link name='parte_fija'>
+			<visual name = "barra">
+				<pose>0 0 <%= Barra[2]*0.5 %> 0 0 0</pose>
+				<geometry>
+					<box>
+						<size><%=Barra.join(' ')%></size>
+					</box>
+				</geometry>
+				<%=printGrayMaterial()%>
+			</visual>
+			<collision name = "barra">
+				<pose>0 0 <%= Barra[2]*0.5 %> 0 0 0</pose>
+				<geometry>
+					<box>
+						<size><%=Barra.join(' ')%></size>
+					</box>
+				</geometry>
+			</collision>
+<%
+	for i in 0..1
+		x = 0
+		y = S*0.5 * ((-1)**i)
+		z = H1 * 0.5 + Barra[2]
+		pose = [x, y, z, 0, 0, 0]
+%>
+			<visual name = "marco_<%=i%>">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<cylinder>
+						<radius><%=R1%></radius>
+						<length><%=H1%></length>
+					</cylinder>
+				</geometry>
+				<%=printGrayMaterial()%>
+			</visual>
+			<collision name = "marco_<%=i%>">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<cylinder>
+						<radius><%=R1%></radius>
+						<length><%=H1%></length>
+					</cylinder>
+				</geometry>
+			</collision>
+<%
+	end
+%>
+			<inertial>
+				<mass>0.1</mass>
+			</inertial>
+		</link>
+<%
+	for i in 0..1
+		x = 0
+		y = S*0.5 * ((-1)**i)
+		z = H2 * 0.5 + H1 + Barra[2]
+		pose = [x, y, z, 0, 0, 0]
+%>
+		<link name="herramienta_<%=i%>">
+			<pose><%=pose.join(' ')%></pose>
+			<visual name = "herramienta_<%=i%>">
+				<geometry>
+					<cylinder>
+						<radius><%=R2%></radius>
+						<length><%=H2%></length>
+					</cylinder>
+				</geometry>
+				<%=printPurpleMaterial()%>
+			</visual>
+			<collision name = "herramienta_<%=i%>">
+				<geometry>
+					<cylinder>
+						<radius><%=R2%></radius>
+						<length><%=H2%></length>
+					</cylinder>
+				</geometry>
+			</collision>
+			<inertial>
+				<mass>0.5</mass>
+			</inertial>
+		</link>
+		<joint name="joint_herramienta_<%=i%>" type="prismatic">
+			<parent>parte_fija</parent>
+			<child>herramienta_<%=i%></child>
+			<axis>
+				<xyz>0 1 0</xyz>
+				<use_parent_model_frame>0</use_parent_model_frame>
+				<limit>
+				  <lower>-0.05</lower>
+				  <upper>0</upper>
+				  <effort>-1</effort>
+				  <velocity>-1</velocity>
+				</limit>
+				<dynamics>
+				  <spring_reference>0</spring_reference>
+				  <spring_stiffness>0</spring_stiffness>
+				  <damping>0</damping>
+				  <friction>1</friction>
+				</dynamics>
+			</axis>
+			<physics>
+				<ode>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+					<suspension>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</suspension>
+				</ode>
+			</physics>
+		</joint>
+<% end %>
+<%
+	x = 0
+	y = 0
+	z = H3 * 0.5 + Barra[2]
+	pose = [x, y, z, 0, 0, 0]
+%>
+		<link name="base_pinza">
+			<visual name = "cilindro_base_pinza">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<cylinder>
+						<radius><%=R1%></radius>
+						<length><%=H3%></length>
+					</cylinder>
+				</geometry>
+				<%=printPurpleMaterial()%>
+			</visual>
+			<collision name = "cilindro_base_pinza">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<cylinder>
+						<radius><%=R1%></radius>
+						<length><%=H3%></length>
+					</cylinder>
+				</geometry>
+			</collision>
+<%
+	size = [0.1, 0.03, 0.01]
+	pose[2] = pose[2] + H3*0.5 + size[2]*0.5
+%>
+			<visual name = "box_base_pinza">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<box>
+						<size><%=size.join('')%></size>
+					</box>
+				</geometry>
+				<%=printPurpleMaterial()%>
+			</visual>
+			<collision name = "box_base_pinza">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<box>
+						<size><%=size.join('')%></size>
+					</box>
+				</geometry>
+			</collision>
+			<inertial>
+				<mass>0.1</mass>
+			</inertial>
+		</link>
+
+		<joint name="joint_base_pinza" type="fixed">
+			<parent>parte_fija</parent>
+			<child>base_pinza</child>
+		</joint>
+<%
+	posegrapa = [0, 0, 0, 0, 0, 0]
+	for i in 0..5
+		posegrapa[i] = pose[i]
+	end
+	posegrapa[2] = pose[2] + 0.07
+	posegrapa[4] = pose[4] + Math::PI*0.5					# <<<<<<<<<<<<<<<< GRAPA
+%>
+		<!--include>
+      		<uri>model://Grapa</uri>
+            <name>Grapa</name>
+			<pose><%=posegrapa.join(' ')%></pose>
+    	</include>
+    	<joint name='joint_grapa' type='fixed'>
+    		<parent>base_pinza</parent>
+    		<child>Grapa::superior</child>
+    	</joint-->
+<%
+	x0 = size[0]
+	z0 = size[2]
+	size = [0.01, 0.03, 0.2]				# TAMAÑO DE CADA DEDO
+	z = pose[2] + size[2]*0.5 + z0*0.5
+	for i in 0..1
+		x = ((-1)**i) * (x0*0.5 - size[0]*0.5)
+		y = 0
+		pose = [x, y, z, 0, 0, 0]
+%>
+		<link name = "dedo_<%=i%>">
+			<visual name = "visual_dedo_<%=i%>">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<box>
+						<size><%=size.join('')%></size>
+					</box>
+				</geometry>
+				<%=printPurpleMaterial()%>
+			</visual>
+			<collision name = "collision_dedo_<%=i%>">
+				<pose><%=pose.join(' ')%></pose>
+				<geometry>
+					<box>
+						<size><%=size.join('')%></size>
+					</box>
+				</geometry>
+			</collision>
+			<inertial>
+				<pose><%=pose.join(' ')%></pose>
+				<mass>0.1</mass>
+			</inertial>
+		</link>
+
+		<joint name="joint_dedo_<%=i%>" type="prismatic">
+			<parent>base_pinza</parent>
+			<child>dedo_<%=i%></child>
+			<pose><%=x%> 0 <%=z - size[2]*0.5%> 0 0 <%=Math::PI*(1-i)%></pose>
+			<axis>
+				<xyz>1 0 0</xyz>
+				<use_parent_model_frame>0</use_parent_model_frame>
+				<limit>
+				  <lower>0.0</lower>
+				  <upper>0.03</upper>
+				  <effort>-1</effort>
+				  <velocity>-1</velocity>
+				</limit>
+				<dynamics>
+				  <spring_reference>0</spring_reference>
+				  <spring_stiffness>0</spring_stiffness>
+				  <damping>0</damping>
+				  <friction>10</friction>
+				</dynamics>
+			</axis>
+			<physics>
+				<ode>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+					<suspension>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</suspension>
+				</ode>
+			</physics>
+		</joint>
+
+<% end %>
+
+  	</model>
+</sdf>

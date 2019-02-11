@@ -1,0 +1,172 @@
+<?xml version='1.0'?>
+<%
+	# Tamaño del chasis. IMPORTANTE: si se modifica aquí, también habrá que modificarlo en el model.rsdf del Tren.
+	Chassis_size = [0.6, 1, 0.2]
+	Chasis_center = [Chassis_size[0] * 0.5, Chassis_size[1] * 0.5, Chassis_size[2] * 0.5]
+	Chassis_mass = 3	# Peso en Kg del chasis.
+
+	# Tamaño de la seccion de los ejes que sostienen las ruedas.
+	Seccion_ejes = [0.05, 0.05]
+
+	# Los siguientes tres parámetros están definidos en otros ficheros, y hay que ponerlos también aquí para que las medidas del carrito coincidan con las de la red eléctrica.
+	R1 = 0.05	# Radio del cable.
+	R2 = 0.05	# Radio de la parte interior de la rueda.
+	D  = 0.4	# Separación entre ambos cables.
+
+	S  = 0.04	# Separación entre la rueda de abajo y el cable.
+
+	# 'X' será la distancia entre el centro de la rueda y la punta del eje
+	# (queda escrita al final del sdf de las ruedas cuando se compila).
+	X = 0.085
+	# 'L2' será la separación entre las dos líneas de ruedas.
+	L2 = D + 2*X
+	# La referencia de z = 0 estará a la altura del cable.
+	# 'H' será la longitud de cada barra que une las ruedas de arriba con el chasis.
+	H0 = 0.4
+	H = [H0, H0 - (2*R1 + R2 + S), H0]
+	# 'L1' será la separación entre las dos ruedas de arriba.
+	L1 = 0.4
+
+	# Posición de cada una de las tres ruedas.
+	Pos_ruedas = 	[[0,	D/2 + X,  R1+R2   ],	# Primera rueda de arriba
+					 [L1/2,	D/2 + X,-(R1+R2+S)],	# Rueda de en medio
+					 [L1,	D/2 + X,  R1+R2   ]]	# Segunda rueda de arriba
+
+	# Parámetros del cilindro que une el UR3 a la base.
+	R_base = 0.08
+	H_base = 0.02
+	Offset_y_base = 0.1
+
+	def printRedMaterial()
+    "<material>\n"\
+    "  <ambient>0.3 0 0 1</ambient>\n"\
+    "  <emissive>0 0 0 1</emissive>\n"\
+    "  <diffuse>0.5 0 0 1</diffuse>\n"\
+    "  <specular>1 1 1 1</specular>\n"\
+    "</material>\n"
+  	end
+
+  	def printBlueMaterial()
+    "<material>\n"\
+    "  <ambient>0 0 0.3 1</ambient>\n"\
+    "  <emissive>0 0 0 1</emissive>\n"\
+    "  <diffuse>0.5 0.5 0.5 1</diffuse>\n"\
+    "  <specular>1 1 1 1</specular>\n"\
+    "</material>\n"
+  	end
+
+%>
+<sdf version='1.6'>
+	<model name='Carrito'>
+		<pose>0 0 <%=Chassis_size[2]/2%> 0 0 0</pose>
+		<link name='Chassis'>
+			<gravity>true</gravity>
+			<visual name = "visual_chasis">
+				<geometry>
+					<box>
+						<size><%=Chassis_size.join(' ')%></size>
+					</box>
+				</geometry>
+				<%=printRedMaterial()%>
+			</visual>
+			<collision name = "collision_chasis">
+				<geometry>
+					<box>
+						<size><%=Chassis_size.join(' ')%></size>
+					</box>
+				</geometry>
+			</collision>
+			<inertial>
+		      	<mass><%= Chassis_mass %></mass>
+		      	<inertia>
+		        	<ixx>0.166667</ixx>
+		        	<iyy>0.166667</iyy>
+		        	<izz>0.166667</izz>
+		      	</inertia>
+		    </inertial>
+		</link>
+<%
+	# Pose del enganche del ur3
+	pose = [-(Chassis_size[0] + H_base)*0.5, -Offset_y_base, 0, 0, Math::PI*0.5, 0]
+%>
+		<link name="Enganche_ur3">
+			<pose><%=pose.join(' ')%></pose>
+			<visual name="visual_enganche_ur3">
+				<geometry>
+					<cylinder>
+						<radius><%=R_base%></radius>
+						<length><%=H_base%></length>
+					</cylinder>
+				</geometry>
+				<%=printRedMaterial()%>
+			</visual>
+			<collision name="collision_enganche_ur3">
+				<geometry>
+					<cylinder>
+						<radius><%=R_base%></radius>
+						<length><%=H_base%></length>
+					</cylinder>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_enganche" type="fixed">
+			<parent>Chassis</parent>
+			<child>Enganche_ur3</child>
+		</joint>
+<% 
+	for i in 0..2
+		z = Chassis_size[2]*0.5 + H[i]*0.5
+		x = (i - 1) * (L1*0.5 - Seccion_ejes[1]*0.5)
+		for j in 0..1
+			y = ((-1)**j) * (L2*0.5 + Seccion_ejes[1]*0.5)
+			pose = [x, y, z, 0, 0, 0]
+%>
+		<link name='eje_vertical_<%=2*i + j%>'>
+			<pose><%=pose.join(' ')%></pose>
+			<visual name = "visual_eje_vertical_<%=i%>">
+				<geometry>
+					<box>
+						<size><%=Seccion_ejes.join(' ')%> <%=H[i]%></size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_<%=i%>">
+				<geometry>
+					<box>
+						<size><%=Seccion_ejes.join(' ')%> <%=H[i]%></size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_<%=2*i + j%>" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_<%=2*i + j%></child>
+		</joint>
+<%
+	pose[1] = pose[1] + ((-1)**(j+1)) * Seccion_ejes[0] * 0.5
+	pose[2] = pose[2] + H[i]*0.5 - 0.05*0.5
+	pose[3] = Math::PI * (j-1)
+%>
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_<%=2*i + j%></name>
+			<pose><%=pose.join(' ')%></pose>
+    	</include>
+
+    	<joint name="joint_rueda_<%=2*i + j%>" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_<%=2*i + j%></parent>
+			<child>rueda_<%=2*i + j%>::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+<% end end %>
+  	</model>
+</sdf>

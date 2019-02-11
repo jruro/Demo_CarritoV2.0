@@ -1,0 +1,324 @@
+<?xml version='1.0'?>
+
+<sdf version='1.6'>
+	<model name='Carrito'>
+		<pose>0 0 0.1 0 0 0</pose>
+		<link name='Chassis'>
+			<gravity>true</gravity>
+			<visual name = "visual_chasis">
+				<geometry>
+					<box>
+						<size>0.6 1 0.2</size>
+					</box>
+				</geometry>
+				<material>
+  <ambient>0.3 0 0 1</ambient>
+  <emissive>0 0 0 1</emissive>
+  <diffuse>0.5 0 0 1</diffuse>
+  <specular>1 1 1 1</specular>
+</material>
+
+			</visual>
+			<collision name = "collision_chasis">
+				<geometry>
+					<box>
+						<size>0.6 1 0.2</size>
+					</box>
+				</geometry>
+			</collision>
+			<inertial>
+		      	<mass>30</mass>
+		      	<inertia>
+		        	<ixx>0.166667</ixx>
+		        	<iyy>0.166667</iyy>
+		        	<izz>0.166667</izz>
+		      	</inertia>
+		    </inertial>
+		</link>
+
+		<link name="Enganche_ur3">
+			<pose>-0.31 -0.1 0 0 1.5707963267948966 0</pose>
+			<visual name="visual_enganche_ur3">
+				<geometry>
+					<cylinder>
+						<radius>0.08</radius>
+						<length>0.02</length>
+					</cylinder>
+				</geometry>
+				<material>
+  <ambient>0.3 0 0 1</ambient>
+  <emissive>0 0 0 1</emissive>
+  <diffuse>0.5 0 0 1</diffuse>
+  <specular>1 1 1 1</specular>
+</material>
+
+			</visual>
+			<collision name="collision_enganche_ur3">
+				<geometry>
+					<cylinder>
+						<radius>0.08</radius>
+						<length>0.02</length>
+					</cylinder>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_enganche" type="fixed">
+			<parent>Chassis</parent>
+			<child>Enganche_ur3</child>
+		</joint>
+
+		<link name='eje_vertical_0'>
+			<pose>-0.17500000000000002 0.31000000000000005 0.30000000000000004 0 0 0</pose>
+			<visual name = "visual_eje_vertical_0">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_0">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_0" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_0</child>
+		</joint>
+
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_0</name>
+			<pose>-0.17500000000000002 0.28500000000000003 0.475 -3.141592653589793 0 0</pose>
+    	</include>
+
+    	<joint name="joint_rueda_0" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_0</parent>
+			<child>rueda_0::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+
+		<link name='eje_vertical_1'>
+			<pose>-0.17500000000000002 -0.31000000000000005 0.30000000000000004 0 0 0</pose>
+			<visual name = "visual_eje_vertical_0">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_0">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_1" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_1</child>
+		</joint>
+
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_1</name>
+			<pose>-0.17500000000000002 -0.28500000000000003 0.475 0.0 0 0</pose>
+    	</include>
+
+    	<joint name="joint_rueda_1" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_1</parent>
+			<child>rueda_1::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+
+		<link name='eje_vertical_2'>
+			<pose>0.0 0.31000000000000005 0.20500000000000002 0 0 0</pose>
+			<visual name = "visual_eje_vertical_1">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.21</size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_1">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.21</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_2" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_2</child>
+		</joint>
+
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_2</name>
+			<pose>0.0 0.28500000000000003 0.285 -3.141592653589793 0 0</pose>
+    	</include>
+
+    	<joint name="joint_rueda_2" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_2</parent>
+			<child>rueda_2::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+
+		<link name='eje_vertical_3'>
+			<pose>0.0 -0.31000000000000005 0.20500000000000002 0 0 0</pose>
+			<visual name = "visual_eje_vertical_1">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.21</size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_1">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.21</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_3" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_3</child>
+		</joint>
+
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_3</name>
+			<pose>0.0 -0.28500000000000003 0.285 0.0 0 0</pose>
+    	</include>
+
+    	<joint name="joint_rueda_3" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_3</parent>
+			<child>rueda_3::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+
+		<link name='eje_vertical_4'>
+			<pose>0.17500000000000002 0.31000000000000005 0.30000000000000004 0 0 0</pose>
+			<visual name = "visual_eje_vertical_2">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_2">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_4" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_4</child>
+		</joint>
+
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_4</name>
+			<pose>0.17500000000000002 0.28500000000000003 0.475 -3.141592653589793 0 0</pose>
+    	</include>
+
+    	<joint name="joint_rueda_4" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_4</parent>
+			<child>rueda_4::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+
+		<link name='eje_vertical_5'>
+			<pose>0.17500000000000002 -0.31000000000000005 0.30000000000000004 0 0 0</pose>
+			<visual name = "visual_eje_vertical_2">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</visual>
+			<collision name = "collision_eje_vertical_2">
+				<geometry>
+					<box>
+						<size>0.05 0.05 0.4</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="joint_vert_5" type="fixed">
+			<parent>Chassis</parent>
+			<child>eje_vertical_5</child>
+		</joint>
+
+		<include>
+      		<uri>model://Rueda</uri>
+            <name>rueda_5</name>
+			<pose>0.17500000000000002 -0.28500000000000003 0.475 0.0 0 0</pose>
+    	</include>
+
+    	<joint name="joint_rueda_5" type="revolute">
+    		<pose>0 0 0 0 0 0</pose>
+			<parent>eje_vertical_5</parent>
+			<child>rueda_5::rueda</child>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		      	<dynamics>
+		      		<friction>5</friction>
+		      	</dynamics>
+	      	</axis>
+		</joint>
+
+  	</model>
+</sdf>

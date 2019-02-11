@@ -1,0 +1,106 @@
+<?xml version='1.0'?>
+<%
+	# Variables
+	# Para compilar: erb model.rsdf > model.sdf
+	longitud_palo	= 0.2828
+	lado_palo		= 0.01
+
+	radio_esfera	= 0.01
+
+	pi_cuartos		= Math::PI/4
+
+	pose_palo = ["0.10 0.10 0 0 0 "   +   (Math::PI / 4).to_s,
+				 "0.10 -0.10 0 0 0 "  +  (-Math::PI / 4).to_s]
+
+	pose_bola = ["0.2  0.2 0 0 0 0",
+				 "0.2 -0.2 0 0 0 0"]
+
+	pose_aislador = ["0.2  0.2 0 0 "  +  (-Math::PI / 2).to_s + " 0",
+				 	 "0.2 -0.2 0 0 "  +  (-Math::PI / 2).to_s + " 0"]				 
+%>
+<sdf version="1.4">
+	<model name="apoyo">
+		<static>false</static>
+		<self_collide>false</self_collide>
+		<pose>0 0 2 0 0 0</pose>
+		<link name="bola_central">
+			<visual name="visual">
+				<geometry>
+        			<sphere>
+          				<radius><%= radio_esfera %></radius>
+        			</sphere>
+      			</geometry>
+			</visual>
+
+			<collision name="collision">
+				<geometry>
+        			<sphere>
+          				<radius><%= radio_esfera %></radius>
+        			</sphere>
+      			</geometry>
+			</collision>
+		</link>
+<%
+	for i in 0..1
+%>
+		<link name="palo_<%=i%>">
+			<pose><%=pose_palo[i]%></pose>
+			<visual name="visual">
+				<geometry>
+					<box>
+						<size><%= longitud_palo %> <%= lado_palo %> <%= lado_palo %></size>
+					</box>
+				</geometry>
+			</visual>
+
+ 			<collision name="collision">
+				<geometry>
+					<box>
+						<size><%= longitud_palo %> <%= lado_palo %> <%= lado_palo %></size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="bola_central_palo_<%=i%>" type="fixed">
+			<parent>bola_central</parent>
+			<child>palo_<%=i%></child>
+		</joint>
+
+		<link name="bola_borde_<%=i%>">
+			<pose><%=pose_bola[i]%></pose>
+			<visual name="visual">
+				<geometry>
+        			<sphere>
+          				<radius><%= radio_esfera %></radius>
+        			</sphere>
+      			</geometry>
+			</visual>
+ 
+			<collision name="collision">
+				<geometry>
+        			<sphere>
+          				<radius><%= radio_esfera %></radius>
+        			</sphere>
+      			</geometry>
+			</collision> 
+		</link>
+
+		<joint name="bola_borde_<%=i%>_palo_<%=i%>" type="fixed">
+			<parent>bola_borde_<%=i%></parent>
+			<child>palo_<%=i%></child>
+		</joint> -->
+
+		<include>
+			<uri>model://Aislador</uri>
+			<name>Aislador_<%=i%></name>
+			<pose><%=pose_aislador[i]%></pose>
+		</include>
+
+		<joint name="joint_aislador_<%=i%>" type="fixed">
+			<child>Aislador_<%=i%>::aislador</child>
+			<parent>bola_borde_<%=i%></parent>
+		</joint>
+<% end %>
+	</model>
+</sdf>

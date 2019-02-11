@@ -1,0 +1,96 @@
+<?xml version='1.0'?>
+
+<sdf version='1.6'>
+	<model name='Tren'>
+		<pose>0 0 6.18 0 0 0</pose>
+
+		<include>
+      		<uri>model://Carrito</uri>
+            <name>carrito_0</name>
+			<pose>0.0 0 0 0 0 0</pose>
+    	</include>
+
+		<include>
+      		<uri>model://Carrito</uri>
+            <name>carrito_1</name>
+			<pose>0.8999999999999999 0 0 0 0 0</pose>
+    	</include>
+
+		<link name='plataforma'>
+			<pose>0.44999999999999996 0 0.0925 0 0 0</pose>
+			<visual name = "visual_plataforma">
+				<geometry>
+					<box>
+						<size>0.3 1 0.015</size>
+					</box>
+				</geometry>
+				<material>
+  <ambient>0 0 0.3 1</ambient>
+  <emissive>0 0 0 1</emissive>
+  <diffuse>0 0 0.1 1</diffuse>
+  <specular>1 1 1 1</specular>
+</material>
+
+			</visual>
+			<collision name = "collision_plataforma">
+				<geometry>
+					<box>
+						<size>0.3 1 0.015</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+    	<joint name="joint_plataforma_A" type="revolute">
+			<parent>carrito_0::Chassis</parent>
+			<child>plataforma</child>
+    		<pose>-0.15 0 0.0075 0 0 0</pose>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		        <limit>
+					<lower>-1.5707</lower>
+					<upper>0</upper>
+					<effort>-1</effort>
+					<velocity>-1</velocity>
+		        </limit>
+	      	</axis>
+		</joint>
+
+		<joint name="joint_plataforma_B" type="revolute">
+			<parent>carrito_1::Chassis</parent>
+			<child>plataforma</child>
+    		<pose>0.15 0 0.0075 0 0 0</pose>
+			<axis>
+	        	<use_parent_model_frame>false</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		        <limit>
+					<lower>-1.5707</lower>
+					<upper>0</upper>
+					<effort>-1</effort>
+					<velocity>-1</velocity>
+		        </limit>
+	      	</axis>
+		</joint>
+
+		<include>
+      		<uri>model://ur3</uri>
+            <name>ur3</name>
+			<pose>-0.32 -0.1 0 0 1.5707963267948966 3.141592653589793</pose>
+    	</include>
+    	<joint name="ur3_base_joint" type="fixed">
+    		<parent>carrito_0::Enganche_ur3</parent>
+    		<child>ur3::base_link</child>
+    	</joint>
+
+    	<include>
+    		<uri>model://Herramienta</uri>
+    		<name>Herramienta</name>
+			<pose>-0.39 -0.29000000000000004 -0.45 1.5707963267948966 0 0</pose>
+    	</include>
+    	<joint name="ur3_tool_joint" type="fixed">
+    		<parent>ur3::wrist_3_link</parent>
+    		<child>Herramienta::parte_fija</child>
+    	</joint>
+	</model>
+</sdf>

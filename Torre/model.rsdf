@@ -1,0 +1,66 @@
+<%
+	# Posición de cada apoyo
+	#				Y	   Z
+	pose_apoyo = [[-1.52,  7.8], # Bajo
+				  [-1.73,  9.7], # Medio
+				  [-1.37, 11.6]] # Alto
+
+	n_col_aisl = 1 # Número de columnas con aisladores.
+	n_fil_aisl = 1 # Número de filas con aisladores.
+%>
+<?xml version='1.0'?>
+<sdf version="1.4">
+	<model name="Torre">
+		<static>false</static>
+		<self_collide>false</self_collide>
+		<link name="link_torre">
+  			<pose>0 0 0.1 0 0 0</pose>
+			<visual name="visual_torre">
+				<geometry>
+        			<mesh>
+          				<uri>model://Torre/meshes/Torre.stl</uri>
+          				<scale>20 20 20</scale>
+        			</mesh>
+      			</geometry>
+			</visual>
+
+			<collision name="collision_torre">
+				<pose>0 0 6.5 0 0 0</pose>
+				<geometry>
+					<box>
+		            	<size>1 1 13</size>
+		        	</box>
+		        </geometry>
+			</collision>
+			<inertial>
+				<mass>5000</mass>
+				<inertia>
+			        <ixx>1</ixx>
+			        <iyy>1</iyy>
+			        <izz>1</izz>
+			    </inertia>
+			</inertial>
+		</link>
+
+		<joint name="joint_suelo" type="fixed">
+			<parent>world</parent>
+			<child>link_torre</child>
+		</joint>
+<%
+	for i in 0..(n_col_aisl - 1)
+		for j in 0..(n_fil_aisl - 1)
+		pose = "0 " + (((-1) ** (j + 1)) * pose_apoyo[i][0]).to_s + " " + pose_apoyo[i][1].to_s + " 0 " + (Math::PI / 2).to_s + " 0"
+%>
+		<include>
+			<uri>model://Apoyo_cables</uri>
+			<pose><%=pose%></pose>
+			<name>apoyo_<%=i%>_<%=j%></name>
+		</include>
+
+		<joint name="joint_apoyo_<%=i%>_<%=j%>" type="fixed">
+			<child>apoyo_<%=i%>_<%=j%>::bola_central</child>
+			<parent>world</parent>
+		</joint>
+<% end end # End of both for bucles %>
+	</model>
+</sdf>

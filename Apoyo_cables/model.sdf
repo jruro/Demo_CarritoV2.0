@@ -1,0 +1,145 @@
+<?xml version='1.0'?>
+
+<sdf version="1.4">
+	<model name="apoyo">
+		<static>false</static>
+		<self_collide>false</self_collide>
+		<pose>0 0 2 0 0 0</pose>
+		<link name="bola_central">
+			<visual name="visual">
+				<geometry>
+        			<sphere>
+          				<radius>0.01</radius>
+        			</sphere>
+      			</geometry>
+			</visual>
+
+			<collision name="collision">
+				<geometry>
+        			<sphere>
+          				<radius>0.01</radius>
+        			</sphere>
+      			</geometry>
+			</collision>
+		</link>
+
+		<link name="palo_0">
+			<pose>0.10 0.10 0 0 0 0.7853981633974483</pose>
+			<visual name="visual">
+				<geometry>
+					<box>
+						<size>0.2828 0.01 0.01</size>
+					</box>
+				</geometry>
+			</visual>
+
+ 			<collision name="collision">
+				<geometry>
+					<box>
+						<size>0.2828 0.01 0.01</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="bola_central_palo_0" type="fixed">
+			<parent>bola_central</parent>
+			<child>palo_0</child>
+		</joint>
+
+		<link name="bola_borde_0">
+			<pose>0.2  0.2 0 0 0 0</pose>
+			<visual name="visual">
+				<geometry>
+        			<sphere>
+          				<radius>0.01</radius>
+        			</sphere>
+      			</geometry>
+			</visual>
+ 
+			<collision name="collision">
+				<geometry>
+        			<sphere>
+          				<radius>0.01</radius>
+        			</sphere>
+      			</geometry>
+			</collision> 
+		</link>
+
+		<joint name="bola_borde_0_palo_0" type="fixed">
+			<parent>bola_borde_0</parent>
+			<child>palo_0</child>
+		</joint> -->
+
+		<include>
+			<uri>model://Aislador</uri>
+			<name>Aislador_0</name>
+			<pose>0.2  0.2 0 0 -1.5707963267948966 0</pose>
+		</include>
+
+		<joint name="joint_aislador_0" type="fixed">
+			<child>Aislador_0::aislador</child>
+			<parent>bola_borde_0</parent>
+		</joint>
+
+		<link name="palo_1">
+			<pose>0.10 -0.10 0 0 0 -0.7853981633974483</pose>
+			<visual name="visual">
+				<geometry>
+					<box>
+						<size>0.2828 0.01 0.01</size>
+					</box>
+				</geometry>
+			</visual>
+
+ 			<collision name="collision">
+				<geometry>
+					<box>
+						<size>0.2828 0.01 0.01</size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="bola_central_palo_1" type="fixed">
+			<parent>bola_central</parent>
+			<child>palo_1</child>
+		</joint>
+
+		<link name="bola_borde_1">
+			<pose>0.2 -0.2 0 0 0 0</pose>
+			<visual name="visual">
+				<geometry>
+        			<sphere>
+          				<radius>0.01</radius>
+        			</sphere>
+      			</geometry>
+			</visual>
+ 
+			<collision name="collision">
+				<geometry>
+        			<sphere>
+          				<radius>0.01</radius>
+        			</sphere>
+      			</geometry>
+			</collision> 
+		</link>
+
+		<joint name="bola_borde_1_palo_1" type="fixed">
+			<parent>bola_borde_1</parent>
+			<child>palo_1</child>
+		</joint> -->
+
+		<include>
+			<uri>model://Aislador</uri>
+			<name>Aislador_1</name>
+			<pose>0.2 -0.2 0 0 -1.5707963267948966 0</pose>
+		</include>
+
+		<joint name="joint_aislador_1" type="fixed">
+			<child>Aislador_1::aislador</child>
+			<parent>bola_borde_1</parent>
+		</joint>
+
+	</model>
+</sdf>

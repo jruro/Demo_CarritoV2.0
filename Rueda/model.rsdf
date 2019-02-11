@@ -1,0 +1,61 @@
+<?xml version='1.0'?>
+<%
+	# Visualización de algunos parámetros:
+	#
+	# | |__| |
+	# | |  | |
+	# | |  | |======
+	# | |__| |
+	# | |  | | X = L+H+h/2
+	# 	  |<------>|
+
+	# Variables
+	L = 0.04	# Longitud del palo que une la rueda y el vehículo.
+	a = 0.025	# Radio del palo.
+
+	R = 0.1		# Radio de la parte exterior de la rueda.
+	H = 0.02	# Altura (grosor) del cilindro exterior.
+	r = 0.05	# Radio de la parte interior.
+	h = 0.05	# Altura (grosor) del cilindro interior.
+
+	def PrintPart(name, y, l, r)
+		"<collision name = \"" + name + "_collision\" >\n"\
+		"				<pose>0 " + y.to_s + " 0 " + (Math::PI/2).to_s + " 0 0</pose>\n"\
+		"				<geometry>\n"\
+		"					<cylinder>\n"\
+		"						<radius>" + r.to_s + "</radius>\n"\
+		"						<length>" + l.to_s + "</length>\n"\
+		"					</cylinder>\n"\
+		"				</geometry>\n"\
+		"			</collision>\n"\
+		"			<visual name = \"" + name + "_visual\" >\n"\
+		"				<pose>0 " + y.to_s + " 0 " + (Math::PI/2).to_s + " 0 0</pose>\n"\
+		"				<geometry>\n"\
+		"					<cylinder>\n"\
+		"						<radius>" + r.to_s + "</radius>\n"\
+		"						<length>" + l.to_s + "</length>\n"\
+		"					</cylinder>\n"\
+		"				</geometry>\n"\
+		"				<material>\n"\
+	    "  					<ambient>0.5 0.5 0.5 1</ambient>\n"\
+	    "  					<emissive>0 0 0 1</emissive>\n"\
+	    "  					<diffuse>0.5 0.5 0.5 1</diffuse>\n"\
+	    "  					<specular>1 1 1 1</specular>\n"\
+	    "				</material>\n"\
+		"			</visual>"\
+	end
+%>
+<sdf version='1.6'>
+	<model name='rueda'>
+		<link name='rueda'>
+			<%=PrintPart("palo", L/2, L, a)%>
+
+			<%=PrintPart("ext_1", L + H/2, H, R)%>
+
+			<%=PrintPart("int", L + H + h/2, h, r)%>
+
+			<%=PrintPart("ext_2", L + H + h + H/2, H, R)%>
+		</link>
+  	</model>
+</sdf>
+<!-- X = <%=L + H + h/2%> -->

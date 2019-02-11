@@ -1,0 +1,113 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+	<model name='Aislador'>
+		<self_collide>false</self_collide>
+		<link name='aislador'>
+			<visual name = "visual_palo">
+				<pose>0 0 -0.5 0 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.04</radius>
+						<length>1</length>
+					</cylinder>
+				</geometry>
+			</visual>
+			<collision name = "collision_palo">
+				<pose>0 0 -0.5 0 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.04</radius>
+						<length>1</length>
+					</cylinder>
+				</geometry>
+			</collision>
+
+			<visual name='visual_cilindro_1'>
+				<pose>0 0 -0.2 0 0 0</pose>
+		        <geometry>
+			        <cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+			        </cylinder>
+		        </geometry>
+      		</visual>
+      		<collision name='visual_cilindro_1'>
+      			<pose>0 0 -0.2 0 0 0</pose>
+        		<geometry>
+          			<cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+          			</cylinder>
+        		</geometry>
+      		</collision>
+
+			<visual name='visual_cilindro_2'>
+				<pose>0 0 -0.4 0 0 0</pose>
+		        <geometry>
+			        <cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+			        </cylinder>
+		        </geometry>
+      		</visual>
+      		<collision name='visual_cilindro_2'>
+      			<pose>0 0 -0.4 0 0 0</pose>
+        		<geometry>
+          			<cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+          			</cylinder>
+        		</geometry>
+      		</collision>
+
+			<visual name='visual_cilindro_3'>
+				<pose>0 0 -0.6000000000000001 0 0 0</pose>
+		        <geometry>
+			        <cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+			        </cylinder>
+		        </geometry>
+      		</visual>
+      		<collision name='visual_cilindro_3'>
+      			<pose>0 0 -0.6000000000000001 0 0 0</pose>
+        		<geometry>
+          			<cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+          			</cylinder>
+        		</geometry>
+      		</collision>
+
+			<visual name='visual_cilindro_4'>
+				<pose>0 0 -0.8 0 0 0</pose>
+		        <geometry>
+			        <cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+			        </cylinder>
+		        </geometry>
+      		</visual>
+      		<collision name='visual_cilindro_4'>
+      			<pose>0 0 -0.8 0 0 0</pose>
+        		<geometry>
+          			<cylinder>
+			            <radius>0.1</radius>
+			            <length>0.03</length>
+          			</cylinder>
+        		</geometry>
+      		</collision>
+
+
+			<inertial>
+				<pose>0 0 -0.5 0 0 0</pose>
+				<mass>1</mass>
+				<inertia>
+			        <ixx>1</ixx>
+			        <iyy>1</iyy>
+			        <izz>1</izz>
+			    </inertia>
+			</inertial>
+		</link>
+  	</model>
+</sdf>

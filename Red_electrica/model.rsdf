@@ -1,0 +1,92 @@
+<%
+    L = 17.4548 # Longitud del cable (queda escrita al final del model.sdf del cable al compilar).
+    N = 2       # Número de torres.
+    S = 0.4     # Separación entre los dos cables.
+    R = 0.015   # Radio del cable (viene definido en el modelo del cable).
+
+    CALBE_TYPE = 0  # Tipo de cable: 0 = modelo cilindros y bolas, 1 = modelo simple recto, 2 = modelo stl (en construcción).
+
+    def printBlackMaterial()
+    "<material>\n"\
+    "  <ambient>0 0 0 1</ambient>\n"\
+    "  <emissive>0 0 0 1</emissive>\n"\
+    "  <diffuse>0 0 0 1</diffuse>\n"\
+    "  <specular>1 1 1 1</specular>\n"\
+    "</material>\n"
+    end
+%>
+<?xml version='1.0'?>
+<sdf version="1.4">
+	<model name="Red">
+<%  for i in 0..(N - 1)
+        x = i * L
+%>
+		<include>
+      		<uri>model://Torre</uri>
+            <name>Torre_<%=i%></name>
+      		<pose><%=x%> 0 0 0 0 0</pose>
+    	</include>
+<%  end
+    for i in 0..(N - 2)
+        x = i * L
+
+        for j in 1..2
+            if j == 1
+                y = 1.32
+            else
+                y = 1.32 + S
+            end
+
+            if CALBE_TYPE == 0
+%>
+        <include>
+            <uri>model://Cable</uri>
+            <pose><%=x%> <%=y%> 6.6 0 0 0</pose>
+            <name>Cable_<%=i%>_0_<%=j%></name>
+        </include>
+
+        <joint name="joint_Cable_<%=i%>_0_<%=j%>_A" type="fixed">
+            <parent>world</parent>
+            <child>Cable_<%=i%>_0_<%=j%>::link_0</child>
+        </joint>
+
+        <joint name="joint_Cable_<%=i%>_0_<%=j%>_B" type="fixed">
+            <parent>world</parent>
+            <child>Cable_<%=i%>_0_<%=j%>::link_end</child>
+        </joint>
+<%
+            elsif CALBE_TYPE == 1
+%>
+        <link name="Cable_<%=i%>_0_<%=j%>">
+            <pose><%=L*0.5%> <%=y%> 6.6 0 <%=Math::PI*0.5%> 0</pose>
+            <collision name = "cable_<%=i%>_collision">
+                <geometry>
+                    <cylinder>
+                        <length><%=L%></length>
+                        <radius><%=R%></radius>
+                    </cylinder>
+                </geometry>
+            </collision>
+            <visual name = "cable_<%=i%>_visual">
+                <geometry>
+                    <cylinder>
+                        <length><%=L%></length>
+                        <radius><%=R%></radius>
+                    </cylinder>
+                </geometry>
+                <%= printBlackMaterial() %>
+            </visual>
+        </link>
+
+        <joint name="joint_Cable_<%=i%>_0_<%=j%>_A" type="fixed">
+            <parent>world</parent>
+            <child>Cable_<%=i%>_0_<%=j%></child>
+        </joint>
+
+        <joint name="joint_Cable_<%=i%>_0_<%=j%>_B" type="fixed">
+            <parent>world</parent>
+            <child>Cable_<%=i%>_0_<%=j%></child>
+        </joint>
+<% end end end %>
+	</model>
+</sdf>

@@ -1,0 +1,108 @@
+<?xml version='1.0'?>
+
+<sdf version='1.6'>
+	<model name='rueda'>
+		<link name='rueda'>
+			<collision name = "palo_collision" >
+				<pose>0 0.02 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.025</radius>
+						<length>0.04</length>
+					</cylinder>
+				</geometry>
+			</collision>
+			<visual name = "palo_visual" >
+				<pose>0 0.02 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.025</radius>
+						<length>0.04</length>
+					</cylinder>
+				</geometry>
+				<material>
+  					<ambient>0.5 0.5 0.5 1</ambient>
+  					<emissive>0 0 0 1</emissive>
+  					<diffuse>0.5 0.5 0.5 1</diffuse>
+  					<specular>1 1 1 1</specular>
+				</material>
+			</visual>
+
+			<collision name = "ext_1_collision" >
+				<pose>0 0.05 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.1</radius>
+						<length>0.02</length>
+					</cylinder>
+				</geometry>
+			</collision>
+			<visual name = "ext_1_visual" >
+				<pose>0 0.05 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.1</radius>
+						<length>0.02</length>
+					</cylinder>
+				</geometry>
+				<material>
+  					<ambient>0.5 0.5 0.5 1</ambient>
+  					<emissive>0 0 0 1</emissive>
+  					<diffuse>0.5 0.5 0.5 1</diffuse>
+  					<specular>1 1 1 1</specular>
+				</material>
+			</visual>
+
+			<collision name = "int_collision" >
+				<pose>0 0.08499999999999999 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.05</length>
+					</cylinder>
+				</geometry>
+			</collision>
+			<visual name = "int_visual" >
+				<pose>0 0.08499999999999999 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.05</length>
+					</cylinder>
+				</geometry>
+				<material>
+  					<ambient>0.5 0.5 0.5 1</ambient>
+  					<emissive>0 0 0 1</emissive>
+  					<diffuse>0.5 0.5 0.5 1</diffuse>
+  					<specular>1 1 1 1</specular>
+				</material>
+			</visual>
+
+			<collision name = "ext_2_collision" >
+				<pose>0 0.12 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.1</radius>
+						<length>0.02</length>
+					</cylinder>
+				</geometry>
+			</collision>
+			<visual name = "ext_2_visual" >
+				<pose>0 0.12 0 1.5707963267948966 0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.1</radius>
+						<length>0.02</length>
+					</cylinder>
+				</geometry>
+				<material>
+  					<ambient>0.5 0.5 0.5 1</ambient>
+  					<emissive>0 0 0 1</emissive>
+  					<diffuse>0.5 0.5 0.5 1</diffuse>
+  					<specular>1 1 1 1</specular>
+				</material>
+			</visual>
+		</link>
+  	</model>
+</sdf>
+<!-- X = 0.08499999999999999 -->

@@ -1,0 +1,124 @@
+<?xml version='1.0'?>
+<%
+	# Tamaño del carrito. IMPORTANTE: viene dado del model.rsdf del Carrito, aquí solo se tiene para calcular otras cosas.
+	Chassis_size = [0.6, 1, 0.2]	
+	H_base_ur3 = 0.02				# Altura de la base que sostiene el ur3.
+	Offset_y_ur3 = 0.1				# Offset en el eje y del ur3.
+
+	N = 2							# Número de carritos en el tren.
+	S = 0.3							# Separación entre carritos.
+	H = 0.015						# Altura de la plataforma.
+	Platform_size = [S, Chassis_size[1], H]		# Tamaño de la plataforma que une los dos carritos.
+
+	def printBlueMaterial()
+    "<material>\n"\
+    "  <ambient>0 0 0.3 1</ambient>\n"\
+    "  <emissive>0 0 0 1</emissive>\n"\
+    "  <diffuse>0 0 0.1 1</diffuse>\n"\
+    "  <specular>1 1 1 1</specular>\n"\
+    "</material>\n"
+  	end
+	
+	# Para colocarlo más fácil. BORRAR al terminar las pruebas.
+	pose = [0, 0, 6.18, 0, 0, 0]
+%>
+<sdf version='1.6'>
+	<model name='Tren'>
+		<pose><%=pose.join(' ')%></pose>
+<%	for i in 0..(N-1)
+		x = i*(Chassis_size[0] + S)
+		pose = [x, 0, 0, 0, 0, 0]
+%>
+		<include>
+      		<uri>model://Carrito</uri>
+            <name>carrito_<%=i%></name>
+			<pose><%=pose.join(' ')%></pose>
+    	</include>
+<% 	
+	end
+	x = (Chassis_size[0] + S)*0.5
+	z = (Chassis_size[2] - H)*0.5
+	pose = [x, 0, z, 0, 0, 0]
+%>
+		<link name='plataforma'>
+			<pose><%=pose.join(' ')%></pose>
+			<visual name = "visual_plataforma">
+				<geometry>
+					<box>
+						<size><%=Platform_size.join(' ')%></size>
+					</box>
+				</geometry>
+				<%= printBlueMaterial() %>
+			</visual>
+			<collision name = "collision_plataforma">
+				<geometry>
+					<box>
+						<size><%=Platform_size.join(' ')%></size>
+					</box>
+				</geometry>
+			</collision>
+		</link>
+
+    	<joint name="joint_plataforma_A" type="revolute">
+			<parent>carrito_0::Chassis</parent>
+			<child>plataforma</child>
+    		<pose><%=-S*0.5%> 0 <%=H*0.5%> 0 0 0</pose>
+			<axis>
+	        	<use_parent_model_frame>true</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		        <limit>
+					<lower>-1.5707</lower>
+					<upper>0</upper>
+					<effort>-1</effort>
+					<velocity>-1</velocity>
+		        </limit>
+	      	</axis>
+		</joint>
+
+		<joint name="joint_plataforma_B" type="revolute">
+			<parent>carrito_1::Chassis</parent>
+			<child>plataforma</child>
+    		<pose><%=S*0.5%> 0 <%=H*0.5%> 0 0 0</pose>
+			<axis>
+	        	<use_parent_model_frame>false</use_parent_model_frame>
+		        <xyz>0 1 0</xyz>
+		        <limit>
+					<lower>-1.5707</lower>
+					<upper>0</upper>
+					<effort>-1</effort>
+					<velocity>-1</velocity>
+		        </limit>
+	      	</axis>
+		</joint>
+<%
+	pose = [-(Chassis_size[0]*0.5 + H_base_ur3), -Offset_y_ur3, 0, 0, Math::PI*0.5, Math::PI]
+%>
+		<include>
+      		<uri>model://ur3</uri>
+            <name>ur3</name>
+			<pose><%=pose.join(' ')%></pose>
+    	</include>
+    	<joint name="ur3_base_joint" type="fixed">
+    		<parent>carrito_0::Enganche_ur3</parent>
+    		<child>ur3::base_link</child>
+    	</joint>
+<%
+	pose_punta = [-0.07, -0.19, -0.45, Math::PI*0.5, 0, 0]
+	for i in 0..2
+		pose[i] = pose[i] + pose_punta[i]
+	end
+	for i in 3..5
+		pose[i] = pose_punta[i]
+	end
+%>
+    	<include>
+    		<uri>model://Herramienta</uri>
+    		<name>Herramienta</name>
+			<pose><%=pose.join(' ')%></pose>
+    	</include>
+    	<joint name="ur3_tool_joint" type="fixed">
+    		<parent>ur3::wrist_3_link</parent>
+    		<child>Herramienta::parte_fija</child>
+    	</joint>
+	</model>
+</sdf>
